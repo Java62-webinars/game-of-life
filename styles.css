@@ -1,0 +1,25 @@
+body {
+    font-family: system-ui, Arial, sans-serif;
+    margin: 20px;
+}
+
+#grid {
+    display: grid; /* ← важная строчка браузер понимает, что внутри этого блока (#grid)
+    нужно разместить элементы как клетки таблицы.*/
+    gap: 1px;      /* расстояние между клетками */
+    background: #ccc;
+    border: 1px solid #bbb;
+    width: fit-content;
+    grid-template-columns: repeat(3, 20px);
+    /*grid-template-rows: repeat(3, 20px);*/
+}
+
+.cell {
+    background: #f9f9f9;
+    width: 20px;
+    height: 20px;
+}
+
+.cell.alive {
+    background: #4de6a9; /* цвет "живой" клетки */
+}
