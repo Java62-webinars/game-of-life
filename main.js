@@ -15,9 +15,9 @@ grid.style.gridTemplateColumns = `repeat(${COLS}, ${CELL_SIZE}px)`;
 
 // ====== Состояние (2D-массив 0/1) ======
 let state = createEmptyState(ROWS, COLS); // всё мёртвое по умолчанию
-
+console.log(state);
 function createEmptyState(rows, cols) {
-    return Array.from({ length: rows }, () => Array(cols).fill(0));
+    return Array.from({ length: rows }, () => Array(cols).fill(0));//Можно реализовать двумя вложенными циклами
 }
 
 
@@ -60,3 +60,25 @@ grid.addEventListener('click', (e) => {
     // синхронизируем DOM
     el.classList.toggle('alive', state[r][c] === 1);
 });
+// TODO добавить кнопку - > Step
+//TODO повесить обработчик
+//запускает один цикл
+//считает количество живых соседей и реализует один цикл жизни изменяя state
+
+function randomizeState (state, prob=0.3) {
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            state[r][c] = Math.random() < prob ? 1 :0;
+        }
+    }
+}
+
+// randomizeState(state, 0.5);
+// drawGridFromState();
+const btnRnd = document.getElementById("rand");
+const rndInput = document.getElementById('random-input');
+btnRnd.addEventListener('click', (e) => {
+    const p = rndInput.value;
+    randomizeState(state, p);
+    drawGridFromState();
+})
