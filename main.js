@@ -60,10 +60,6 @@ grid.addEventListener('click', (e) => {
     // синхронизируем DOM
     el.classList.toggle('alive', state[r][c] === 1);
 });
-// TODO добавить кнопку - > Step
-//TODO повесить обработчик
-//запускает один цикл
-//считает количество живых соседей и реализует один цикл жизни изменяя state
 
 function randomizeState (state, prob=0.3) {
     for (let r = 0; r < ROWS; r++) {
@@ -73,12 +69,50 @@ function randomizeState (state, prob=0.3) {
     }
 }
 
-// randomizeState(state, 0.5);
-// drawGridFromState();
+
 const btnRnd = document.getElementById("rand");
 const rndInput = document.getElementById('random-input');
 btnRnd.addEventListener('click', (e) => {
     const p = rndInput.value;
     randomizeState(state, p);
     drawGridFromState();
-})
+});
+
+//функция для подсчета живых соседей
+ function liveNeighbors(x, y, state) {
+     //определяем начальные и конечные координаты
+     const xInit = x===0 ? 0 : x-1;
+     const yInit = y===0 ? 0 : y-1;
+     const xFinal = x+1 === state.length ? x : x+1;
+     const yFinal = y+1 === state[0].length ? y : y+1;
+     //задаем количество соседей
+     let n = 0;
+     for (let r = xInit; r <= xFinal; r++) {
+         for (let c = yInit; c <= yFinal; c++){
+             n+=state[r][c];
+         }
+     }
+     return n - state[x][y];
+ }
+ //инициируем "допросную клетку"
+let oldVictim = null;
+
+ //вешаем листенер на правую кнопку мыши
+grid.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    const el = e.target;
+    if (!el.classList.contains('cell')) return;
+    const r = Number(el.dataset.r);
+    const c = Number(el.dataset.c);
+    if (oldVictim){
+        oldVictim.classList.remove('victim');
+    }
+    el.classList.add('victim');
+    oldVictim = el;
+    console.log(liveNeighbors(r, c, state))
+});
+
+// TODO добавить кнопку - > Step
+//TODO повесить обработчик
+//запускает один цикл
+//считает количество живых соседей и реализует один цикл жизни изменяя state

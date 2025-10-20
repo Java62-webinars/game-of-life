@@ -23,3 +23,6 @@ body {
 .cell.alive {
     background: #4de6a9; /* цвет "живой" клетки */
 }
+.cell.victim{
+    background: #ff0;/* цвет клетки с вопросом про соседей*/
+}
