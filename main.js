@@ -119,7 +119,7 @@ function nextGen(){
     for (let c = 0; c < COLS; c++) {
         const n = liveNeighbors( r, c, state);
         const cell = state[r][c];
-        next[r][c] = +(n === 3 || (cell && n === 2));
+        next[r][c] = + (n === 3 || (cell && n === 2));//!!!
     }
 }
 return next;
@@ -135,3 +135,13 @@ nextTurn.addEventListener('click', (e) => {
     state = nextGen();
     drawGridFromState();
 });
+//Проблемы кода
+//1. Плохо читается
+//2. Не оптимизирован
+//3. Не реализован MVC паттерн
+//4. LiveGrid ->
+//4.1. Инициализировал сетку
+//4.2. Изменял одиночные клетки (менял класс по клику)
+//4.3. Обновлял (рендерил) сетку при обновлении state
+//Итог - LiveGrid отвечает за view, main отвечает и за model и за controller
+//Реализовать жизнь через setInterval -> все умерли -> следующее поколение === предыдущему.
