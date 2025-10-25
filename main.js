@@ -9,8 +9,6 @@ const grid = document.getElementById('grid');
 const liveGrid = new LiveGrid(grid, ROWS, COLS, CELL_SIZE)
 liveGrid.setupContainer()
 
-
-
 // ====== Состояние (2D-массив 0/1) ======
 let state = createEmptyState(ROWS, COLS); // всё мёртвое по умолчанию
 console.log(state);
@@ -45,15 +43,13 @@ liveGrid.mount(state);
 grid.addEventListener('click', (e) => {
     const el = e.target;
     if (!el.classList.contains('cell')) return;
-
     const r = Number(el.dataset.r);
     const c = Number(el.dataset.c);
-
     // переключаем: 0 -> 1, 1 -> 0
     state[r][c] = state[r][c] ? 0 : 1;
-
     // синхронизируем DOM
-    el.classList.toggle('alive', state[r][c] === 1);
+    liveGrid.updateCell(r, c, state[r][c]);
+
 });
 
 function randomizeState (state, prob=0.3) {

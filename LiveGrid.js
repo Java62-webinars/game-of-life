@@ -34,6 +34,15 @@ export class LiveGrid {
         // полностью обновляем содержимое контейнера
         this.container.innerHTML = '';
         this.container.appendChild(frag);
-        this.cells = Array.from(this.container.children);
+        this.cells = Array.from(this.container.children); //Кэш массива -> на будущее
+    }
+
+    // точечное обновление одной клетки
+    updateCell(r, c, alive) {
+        const idx = r * this.cols + c
+        const el = this.cells && this.cells[idx]
+        if (!el) return
+        el.classList.toggle('alive', !!alive);
+        console.log(el.classList.contains('alive'));
     }
 }
