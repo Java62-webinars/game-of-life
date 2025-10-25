@@ -1,5 +1,4 @@
-<!--    TODO field 30x20-->
-
+import { LiveGrid } from './LiveGrid.js'
 // ====== Константы ======
 const ROWS = 20;      // количество строк
 const COLS = 30;      // количество столбцов
@@ -7,11 +6,10 @@ const CELL_SIZE = 20; // размер клетки в пикселях
 
 // ====== Элементы на странице ======
 const grid = document.getElementById('grid');
+const liveGrid = new LiveGrid(grid, ROWS, COLS, CELL_SIZE)
+liveGrid.setupContainer()
 
-// Настраиваем сетку: 30 колонок по 20px
-grid.style.display = 'grid';
-grid.style.gridTemplateColumns = `repeat(${COLS}, ${CELL_SIZE}px)`;
-// grid.style.gridTemplateRows = `repeat(${ROWS}, ${CELL_SIZE}px)`;
+
 
 // ====== Состояние (2D-массив 0/1) ======
 let state = createEmptyState(ROWS, COLS); // всё мёртвое по умолчанию
@@ -43,9 +41,6 @@ function drawGridFromState() {
 }
 
 drawGridFromState();
-
-<!--    TODO addEventListener по клику на клетке делал ее живой и добавлял в массив живых клеток-->
-
 // ====== Тоггл клетки по клику ======
 grid.addEventListener('click', (e) => {
     const el = e.target;
