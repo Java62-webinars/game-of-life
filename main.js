@@ -40,7 +40,7 @@ function drawGridFromState() {
     grid.appendChild(frag);
 }
 
-drawGridFromState();
+liveGrid.mount(state);
 // ====== Тоггл клетки по клику ======
 grid.addEventListener('click', (e) => {
     const el = e.target;
