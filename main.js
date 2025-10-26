@@ -19,15 +19,24 @@ const output = document.getElementById('output');
 rndInput.addEventListener('input', () => {
     output.textContent = rndInput.value;
 });
+// кнопка запуска
+const btnStart = document.getElementById('start');
+// кнопка остановки
+const btnStop = document.getElementById('stop');
 
-//Навешиваем листенеры
-grid.addEventListener('click', onGridCellToggle);
-btnRnd.addEventListener('click', handleRandomizing());
+
 
 // ====== Состояние (2D-массив 0/1) ======
 let state = createEmptyState(ROWS, COLS); // всё мёртвое по умолчанию
 liveGrid.mount(state);
 
+//Навешиваем листенеры
+grid.addEventListener('click', onGridCellToggle());
+btnRnd.addEventListener('click', handleRandomizing());
+// Управление игрой запуск каждые 500 мс (два раза в секунду)
+btnStart.addEventListener('click', () => game.start());
+// Остановка
+btnStop.addEventListener('click', () => game.stop());
 //TODO Migrate to engine
 function randomizeState (state, prob=0.3) {
     for (let r = 0; r < ROWS; r++) {
@@ -74,6 +83,20 @@ nextTurn.addEventListener('click', (e) => {
     liveGrid.renderAll(state);
 });
 
+const game = {
+    timerId: null,
+    start() {
+        if (this.timerId) return;
+        this.timerId = setInterval(() => {
+            state = nextGen(state);
+            liveGrid.renderAll(state);
+        }, 500);
+    },
+    stop() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+};
 // Листенеры
 function onGridCellToggle() {
     return (e) => {
