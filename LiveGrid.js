@@ -45,4 +45,14 @@ export class LiveGrid {
         el.classList.toggle('alive', !!alive);
         console.log(el.classList.contains('alive'));
     }
+
+    //массовое обновление по всему state без пересоздания DOM
+    renderAll(state) {
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                const idx = r * this.cols + c;
+                this.cells[idx].classList.toggle('alive', state[r][c] === 1);
+            }
+        }
+    }
 }
