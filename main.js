@@ -1,5 +1,5 @@
 import { LiveGrid } from './LiveGrid.js'
-import {createEmptyState}  from './engine.js'
+import {createEmptyState, randomizeState, nextGen}  from './engine.js'
 // ====== Константы ======
 const ROWS = 20;      // количество строк
 const COLS = 30;      // количество столбцов
@@ -37,49 +37,13 @@ btnRnd.addEventListener('click', handleRandomizing());
 btnStart.addEventListener('click', () => game.start());
 // Остановка
 btnStop.addEventListener('click', () => game.stop());
-//TODO Migrate to engine
-function randomizeState (state, prob=0.3) {
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            state[r][c] = Math.random() < prob ? 1 :0;
-        }
-    }
-}
-//функция для подсчета живых соседей TODO Migrate to engine
- function liveNeighbors(x, y, state) {
-     //определяем начальные и конечные координаты
-     const xInit = x===0 ? 0 : x-1;
-     const yInit = y===0 ? 0 : y-1;
-     const xFinal = x+1 === ROWS ? x : x+1;
-     const yFinal = y+1 === COLS ? y : y+1;
-     //задаем количество соседей
-     let n = 0;
-     for (let r = xInit; r <= xFinal; r++) {
-         for (let c = yInit; c <= yFinal; c++){
-             n+=state[r][c];
-         }
-     }
-     return n - state[x][y];
- }
- //TODO Migrate to engine
-function nextGen(){
-    const next = [];
-    for (let r = 0; r < ROWS; r++) {
-        next[r] =[]
-    for (let c = 0; c < COLS; c++) {
-        const n = liveNeighbors( r, c, state);
-        const cell = state[r][c];
-        next[r][c] = + (n === 3 || (cell && n === 2));//!!!
-    }
-}
-return next;
-}
+
 //запускает один цикл
 //считает количество живых соседей и реализует один цикл жизни изменяя state
 const nextTurn = document.getElementById('turn');
 nextTurn.addEventListener('click', (e) => {
     const next= state;
-    state    = nextGen();
+    state    = nextGen(state);
     liveGrid.renderAll(state);
 });
 
@@ -97,6 +61,7 @@ const game = {
         this.timerId = null;
     },
 };
+
 // Листенеры
 function onGridCellToggle() {
     return (e) => {
